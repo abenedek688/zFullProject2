@@ -22,6 +22,8 @@ Feel free to replace this README.md file with your own content, or keep it for r
 
 For an in-depth understanding of this project template, please refer to our [documentation](https://docs.particle.io/firmware/best-practices/firmware-template/).
 
+This code is meant to be used with the Particle Photon 2 MicroProcessor, along with the Amped Pulse sensor from OpenBCI, the ADXL335, and the MAX30003. The ADXL335 and MAX30003 can be from any manufacturer, but this repository was developed in conjunction with an ADXL335 from Adafruit industries, and the Protocentral MAX30003 Breakout Board V2
+
 ## Prerequisites To Use This Repository
 
 To use this software/firmware on a device, you'll need:
@@ -97,4 +99,4 @@ For support or feedback on this template or any Particle products, please join o
 
 ## Version
 
-Template version 1.0.2
+Template version 1.0.2zFullProject2

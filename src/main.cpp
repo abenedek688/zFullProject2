@@ -1,7 +1,7 @@
 /*
-* Project myProject
-* Author: Your Name
-* Date:
+* Project Heartguard
+* Author: Aaron Benedek, Emily Rawson, Jadynn Zane
+* Date: 
 * For comprehensive documentation and examples, please visit:
 * https://docs.particle.io/firmware/best-practices/firmware-template/
 */
@@ -89,7 +89,7 @@ uint8_t statusReg[3];
 // PPG Sensor connected to Analog Pin A0
 const int ppgPin = A5;
 
-int threshold = 512; // Adjust this based on your sensor's output
+int threshold = 1000; // Adjust this based on your sensor's output : keep working on this threshold value, workshopping never hurt any
 int sensorValue = 0;
 bool ppgpulseDetected = false;
 unsigned long lastPulseTime = 0;
@@ -155,7 +155,7 @@ std::chrono::milliseconds accelInterval = 100ms;
 
 
 system_tick_t lastPublishppg = 0;
-std::chrono::milliseconds ppgInterval = 100ms;
+std::chrono::milliseconds ppgInterval = 50ms;
 
 system_tick_t lastPublish = 0;
 std::chrono::milliseconds publishInterval = 1100ms;
@@ -237,7 +237,7 @@ void loop()
     float accelZ = getCalibratedAxis(zPin, zOffset);
     //Calculation Combined Magnitude
     float accelMagnitude = sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
-    ThingSpeak.setField(5,(float)accelMagnitude/10);
+    ThingSpeak.setField(4,(float)accelMagnitude/10);
     if (accelMagnitude/10 < freeFallThreshold)
    {
      fallStatus = 0;
@@ -260,7 +260,7 @@ void loop()
          fallStatus = 1;
          //Particle.publish("fallDetection", String(fallStatus), PRIVATE);
          Serial.println("Impact detected - Fall likely!");
-        ThingSpeak.setField(6,fallStatus);
+        ThingSpeak.setField(5,fallStatus);
          
          break;
        }
@@ -284,18 +284,20 @@ void loop()
 
 
             max30003.getHRandRR();   //It will store HR to max30003.heartRate and rr to max30003.RRinterval.
-            Serial.print("Heart Rate  = ");
-            Serial.println(max30003.heartRate);
-            int MAXHR = max30003.heartRate;
+
+            //Use the Serial.print functions to see if data is being collected if it is not being published to the web
+            //Serial.print("Heart Rate  = ");
+            //Serial.println(max30003.heartRate);
+            //int MAXHR = max30003.heartRate;
 
 
-            Serial.print("RR interval  = ");
-            Serial.println(max30003.RRinterval);
-            int MAXRR = max30003.RRinterval;
+            //Serial.print("RR interval  = ");
+            //Serial.println(max30003.RRinterval);
+            //int MAXRR = max30003.RRinterval;
         }
     }
     max30003.getEcgSamples();   //It reads the ecg sample and stores it to max30003.ecgdata .
-    Serial.println(max30003.ecgdata);
+    //Serial.println(max30003.ecgdata);
    }
    //PPG section:
    
@@ -330,19 +332,20 @@ void loop()
   averageBPM /= ppgsampleCount;
 
   // Output BPM
-  ThingSpeak.setField(7,(float)bpm);
-  ThingSpeak.setField(8,(float)averageBPM);
-
+  ThingSpeak.setField(6,(float)bpm);
+  ThingSpeak.setField(7,(float)averageBPM);
+/*
   Serial.print("Current BPM: ");
   Serial.print(bpm);
   Serial.print(" | Average BPM: ");
   Serial.println(averageBPM);
-
+*/
    }
    if (millis() - lastPublish >= publishInterval.count())
    {
     lastPublish = millis();
-    
+
+    //I Set the ECG data to be set on this interval to avoid unecessary processing/commands, since there is such a short sampling interval
    ThingSpeak.setField(1,(long)max30003.ecgdata);
    Serial.println(max30003.ecgdata);
    ThingSpeak.setField(2,(long)max30003.heartRate);
