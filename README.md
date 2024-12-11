@@ -61,17 +61,15 @@ Signal wire (purple) is connected to  pin A5 in this setup, but can be connected
 
 2. Protocentral MAX30003 Breakout Board v2 (https://protocentral.com/product/protocentral-max30003-single-lead-ecg-breakout-board-v2/)
 This single-lead ECG Analog Front-End (AFE) processor is meant to be used with a single lead, with 2 or 3 ECG bioelectrodes for signal acquisition. This setup was done with 2 leads. It uses SPI communication, which utilizes a total of 6 wires, but offers high clock/sampling speeds. In this code folder, the clock rate for the MAX30003 is set to 2 MHz. This board is based off of the MAX30003 Integrated Circuit (IC), from Analog Devices. The datasheet and purchasing options can be found here:(https://www.analog.com/en/products/max30003.html). The pin configuration for the particle photon 2 is shown in the hardware folder in the file CircuitSchematic.png, but is listed below for convenience.
- |MAX30003 pin label| Pin Function         |Photon 2 Connection|
- |----------------- |:--------------------:|------------------:|
- | MISO             | Slave Out            |       MI          |
- | MOSI             | Slave In             |       MO          |
- | SCLK             | Serial Clock         |      SCK          |
- | CS               | Chip Select          |    D18 (S3)       |
- | VCC              | Digital VDD          |     3.3 V         |
- | GND              | Digital Gnd          |      GND          |
- | FCLK             | 32K CLOCK            |                   |       
- | INT1             | Interrupt1           |       D7          |
- | INT2             | Interrupt2           |         
+
+ - MAX30003 MISO --> MI
+ - MAX30003 MOSI --> MO
+ - MAX30003 SCLK --> SCK
+ - MAX30003 CS --> D18 (S3)
+ - MAX30003 VCC --> 3.3 V
+ - MAX30003 GND --> GND
+ - MAX30003 INT1 --> D7
+
 The code in the MAXdef.cpp, MAXdef.h, and the majority of the data acquisition subroutines in main.cpp were taken from the open-source github repository for the protocentral MAX30003 breakout board, which can be found here: (https://github.com/Protocentral/protocentral_max30003)
 
 3. The last sensor used for this setup is the ADXL335 three-axis accelerometer, we used specifically the version manufactured by adafruit industries, which can be purchased here (https://www.adafruit.com/product/163?gad_source=1&gclid=CjwKCAiA6t-6BhA3EiwAltRFGIPogXUoFRIyesKE4u5_cQPXDr2uESDkCmlTZwZFf7fSVao4soRcfBoCuYAQAvD_BwE)
